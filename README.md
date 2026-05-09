@@ -6,7 +6,11 @@
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
 ![CI](https://github.com/RyanJBush/Multi-agent-workflow-orchestration-platform/actions/workflows/ci.yml/badge.svg)
 
-# Orchestrix
+# Orion
+
+**Multi-Agent Workflow Orchestration Platform**
+
+[**🔗 View Live Preview →**](https://www.perplexity.ai/computer/a/orion-preview-project-1-of-9-lCA5DWRgQoa4AN6VYPXAUQ)
 
 > A production-style multi-agent workflow orchestration platform where specialized AI agents are composed into task pipelines, each with defined roles, tool access, retry logic, and cost tracking — built to reflect how real LLM-powered automation systems are structured.
 
@@ -14,7 +18,7 @@
 
 ## 🎯 What I Built & Why
 
-Single-agent LLM systems break down on complex tasks. I built Orchestrix to practice the core patterns of multi-agent orchestration: how you decompose work, route between agents, handle failures gracefully, and keep costs observable.
+Single-agent LLM systems break down on complex tasks. I built Orion to practice the core patterns of multi-agent orchestration: how you decompose work, route between agents, handle failures gracefully, and keep costs observable.
 
 - **Role-specialized agents** — each agent has a defined capability contract (planner, researcher, writer, validator, critic) with scoped tool access, preventing agents from overreaching their role
 - **Directed task graph execution** — workflows are defined as DAGs; the orchestrator resolves dependencies and executes agents in topological order with parallel branches where possible
