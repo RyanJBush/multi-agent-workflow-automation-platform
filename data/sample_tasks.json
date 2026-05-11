@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Vendor research summary",
+    "description": "Search the analytics vendor landscape. Compare three options on pricing and integrations. Summarize findings into a 5-bullet recommendation.",
+    "scenario": "research_automation"
+  },
+  {
+    "title": "Incident triage report",
+    "description": "Fetch the latest API health KPIs. Then evaluate which endpoints exceeded the latency budget. Summarize the top three incidents and propose owners.",
+    "scenario": "ticket_triage"
+  },
+  {
+    "title": "Quarterly business KPI digest",
+    "description": "Pull the KPI snapshot. Compute the QoQ deltas. Summarize the top movers and flag anything that needs human approval.",
+    "scenario": "business_report"
+  },
+  {
+    "title": "Flaky integration retry demo",
+    "description": "Run the flaky integration probe. If it times out, fall back to a simple echo and record the retry trace.",
+    "scenario": "retry_and_fallback"
+  },
+  {
+    "title": "Sensitive export with approval gate",
+    "description": "Export the sensitive customer extract. This step requires explicit human approval before the worker may execute.",
+    "scenario": "human_in_the_loop"
+  }
+]
