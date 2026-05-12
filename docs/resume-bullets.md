@@ -13,7 +13,7 @@ tests in this repo. Pick the 5–8 that best match the target role.
 
 - Built a multi-agent workflow orchestration platform in Python and FastAPI that decomposes a user goal into a typed DAG and routes steps across role-specialized planner, worker, and reviewer agents.
 - Designed a typed agent contract (request, response, structured reasoning trace) so every step in a run emits an auditable decision record consumed by the API, the UI, and the audit log.
-- Implemented a DAG executor with topological scheduling, parallel branch execution via `ThreadPoolExecutor`, per-step retry with exponential-style backoff, and configurable fallback action routing on timeout or runtime failure.
+- Implemented a DAG executor with dependency-aware scheduling, support for concurrent execution of dependency-ready steps, per-step retry with exponential-style backoff, and configurable fallback action routing on timeout or runtime failure.
 - Added a human-in-the-loop approval gate that pauses sensitive steps in a `blocked` state until a reviewer decision is recorded via the approvals API, with full audit logging.
 - Built a tool registry pattern with per-tool timeouts and a uniform `Tool` interface so new tools can be added without modifying the orchestrator; ships with eight deterministic tools (echo, math, search, http_request, code_exec, plus failure-injection helpers).
 - Modeled workflow state as a state machine over SQLAlchemy 2.x (`pending → running → blocked / completed / failed / cancelled`) with pause, resume, cancel, and replay endpoints.
@@ -25,8 +25,8 @@ tests in this repo. Pick the 5–8 that best match the target role.
 ## Skill-anchored variants (drop-in replacements)
 
 - **AI agents** — Designed role-specialized planner, worker, and reviewer agents with scoped tool access and structured reasoning traces persisted per decision.
-- **Multi-agent systems** — Implemented task routing across named agents based on instruction parsing and tool capability, with fallback agent selection on failure.
-- **Workflow orchestration** — Built a DAG executor with topological scheduling, parallel branch execution, and pause / resume / replay semantics over a SQLAlchemy state machine.
+- **Multi-agent systems** — Implemented task routing across named agents based on instruction parsing and tool capability, with tool fallback actions on supported failure classes.
+- **Workflow orchestration** — Built a DAG executor with dependency-aware scheduling, concurrency for dependency-ready steps, and pause / resume / replay semantics over a SQLAlchemy state machine.
 - **Automation** — Modeled five end-to-end automation scenarios (research, triage, reporting, retry, approval) runnable from a single CLI script with no API keys required.
 - **APIs** — Designed a versioned FastAPI surface (`/api/v1/tasks`, `/workflows`, `/approvals`, `/memory`, `/audit`, `/usage`) with Pydantic schemas and auto-generated OpenAPI docs.
 - **State management** — Tracked workflow and step state in SQLAlchemy with explicit transitions, audit events, and a timeline reconstruction endpoint.
