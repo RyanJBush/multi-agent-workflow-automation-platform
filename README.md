@@ -119,10 +119,30 @@ uvicorn app.main:app --reload
 cd frontend && npm ci && npm run dev
 ```
 
+### Run a sample workflow from the CLI
+
+```bash
+python scripts/run_sample_workflow.py \
+  --goal "Search the vendor landscape. Then compare three options. Summarize findings."
+```
+
+This boots an in-process API against an ephemeral SQLite DB, submits the task,
+polls until the run reaches a terminal state, and prints the timeline of agent
+decisions. Five demo scenarios (research, triage, reporting, retry/fallback,
+human-in-the-loop) live in [`data/sample_tasks.json`](data/sample_tasks.json).
+
 ### Quality Checks
 ```bash
 make lint && make test
 ```
+
+---
+
+## 🖼️ Screenshots
+
+Placeholder captures live in [`docs/screenshots/`](docs/screenshots/) — replace
+with real shots of the dashboard, workflow graph, execution log, and approval
+queue once captured from a local run.
 
 ---
 
@@ -131,7 +151,9 @@ make lint && make test
 ```
 backend/    FastAPI API, DAG orchestrator, agent roles, tool registry, cost tracker, tests
 frontend/   React workflow builder and run monitor
-docs/       Architecture, agent design, workflow examples
+docs/       Architecture, API surface, resume bullets, screenshot placeholders
+data/       Sample task scenarios used by the demo CLI
+scripts/    CLI entry points (e.g. run_sample_workflow.py)
 ```
 
 ---
@@ -143,6 +165,22 @@ docs/       Architecture, agent design, workflow examples
 - Retry + fallback logic at the agent level (not just the API level) is what separates a demo from a reliable system
 
 ---
+
+## 📌 Limitations & Future Work
+
+- Tool implementations are deterministic stubs (echo, math, mocked HTTP) so the
+  orchestrator can be tested without external API keys; swapping in real LLM
+  and web-search backends is a planned next step.
+- This is a portfolio project, not a production-deployed service. No real users,
+  no SLA, no live tenants.
+- Postgres is supported via SQLAlchemy and `docker-compose.yml`; tests run on
+  SQLite for speed.
+
+## 📝 Resume Bullets
+
+See [`docs/resume-bullets.md`](docs/resume-bullets.md) for ATS-friendly,
+one-line bullets covering AI agents, multi-agent systems, workflow
+orchestration, automation, APIs, state management, and task routing.
 
 ## 📄 License
 
