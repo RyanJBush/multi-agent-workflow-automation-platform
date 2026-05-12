@@ -3,7 +3,11 @@ from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 from app.models.common import ApprovalStatus
-from app.schemas.approval import ToolApprovalDecision, ToolApprovalRequestCreate, ToolApprovalResponse
+from app.schemas.approval import (
+    ToolApprovalDecision,
+    ToolApprovalRequestCreate,
+    ToolApprovalResponse,
+)
 from app.services.approval_service import ToolApprovalService
 
 router = APIRouter()

@@ -1,6 +1,15 @@
 from fastapi import APIRouter
 
-from app.api.routers import agents, approvals, audit, memory, tasks, tools, usage, workflows
+from app.api.routers import (
+    agents,
+    approvals,
+    audit,
+    memory,
+    tasks,
+    tools,
+    usage,
+    workflows,
+)
 
 api_router = APIRouter()
 api_router.include_router(tasks.router, prefix="/tasks", tags=["tasks"])

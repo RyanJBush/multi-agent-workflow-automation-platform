@@ -22,29 +22,32 @@ import pytest
 from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 
-from app.agents.planner_agent import PlannerAgent, planner_agent
+from app.agents.planner_agent import planner_agent
 from app.core.config import settings
 from app.core.logging import configure_logging
 from app.core.security import create_access_token, get_current_user, require_role
 from app.models.common import (
     ApprovalStatus,
     MemoryScope,
-    MemoryType,
     StepStatus,
     WorkflowRunStatus,
 )
+from app.schemas.usage import UsageQuotaSetRequest
 from app.schemas.workflow import ExecutionStep, WorkflowRun
 from app.services.approval_service import ToolApprovalService
 from app.services.audit_service import AuditService
 from app.services.memory_service import MemoryService
 from app.services.orchestration_service import build_langgraph_stub
-from app.schemas.usage import UsageQuotaSetRequest
 from app.services.usage_service import QuotaExceededError, UsageService
 from app.services.workflow_engine import WorkflowEngine
 from app.services.workflow_insight_service import WorkflowInsightService
 from app.tools.base import Tool, ToolSchema
-from app.tools.default_tools import EchoTool, FlakyTool, MathTool, SensitiveEchoTool, SlowEchoTool
-
+from app.tools.default_tools import (
+    EchoTool,
+    FlakyTool,
+    MathTool,
+    SensitiveEchoTool,
+)
 
 # ---------------------------------------------------------------------------
 # core/security.py
