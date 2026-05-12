@@ -1,74 +1,86 @@
 # Orion — Multi-Agent Workflow Orchestration Platform
 
-A portfolio demo that shows how workflows can be orchestrated across specialized agents using a typed DAG, retry/fallback logic, approval gates, and observability.
+Orion is a **portfolio-scale orchestrator demo** built by a **University of Maryland student studying Information Science and Electrical Engineering with a Business minor**. It demonstrates how a backend can coordinate specialized agents over a workflow graph while keeping execution traceable in both API responses and UI views.
 
-## Recruiter-Facing Summary
-Orion is a full-stack portfolio project focused on orchestration design, not model hype. The backend coordinates planner/worker/reviewer roles, tracks workflow state in SQL, and exposes APIs for runs, approvals, memory, and audit events. The frontend visualizes run status, dependency graphs, and execution traces so recruiters can quickly evaluate systems-thinking and implementation depth.
+## Project Positioning (Honest Behavior Statement)
+Orion currently uses **stub-based agents and deterministic tools**. The planner, worker, and reviewer roles are implemented in code, but they do **not** call external LLM APIs in the default flow. This repository is focused on orchestration design patterns, reliability controls, and observability for a student portfolio demo.
 
-## What This Project Demonstrates
-- Multi-agent coordination patterns across planner, worker, and reviewer roles.
-- Deterministic workflow execution with dependency-aware scheduling.
-- Retry policies, fallback actions, and approval-gated sensitive steps.
-- Auditable run timelines and metrics surfaced through API + UI.
-- **Agent honesty statement:** Agent routing and tool dispatch are implemented as deterministic stubs that simulate multi-agent coordination patterns; swap in a real LLM router for dynamic behavior.
+## What Orion Demonstrates
+- Multi-agent role separation (planner, worker, reviewer).
+- Typed workflow decomposition into dependency-aware DAG steps.
+- Retry + fallback controls for failed steps.
+- Approval-gated sensitive actions that pause and resume runs.
+- Audit logs and usage-style metrics for replay and walkthroughs.
 
-## Tech Stack
-- **Backend:** Python 3.11+, FastAPI, SQLAlchemy 2.x, Pydantic
-- **Frontend:** React 18, TypeScript, Vite
-- **Data:** PostgreSQL (compose), SQLite for tests/demo flows
-- **Testing/quality:** pytest, Ruff, ESLint, GitHub Actions
-
-## Architecture Overview
-See [`docs/architecture.md`](docs/architecture.md) for component diagrams and service boundaries.
+## Agent Graph Overview
+For full details, see [`docs/architecture.md`](docs/architecture.md).
 
 High-level flow:
-1. Planner decomposes a goal into typed steps with dependencies.
-2. Engine schedules dependency-ready steps.
-3. Worker executes tool actions through a registry of deterministic tools.
-4. Reviewer/approval flow can block and resume sensitive steps.
-5. Audit + metrics are persisted for replay and analysis.
+1. **Planner Agent** decomposes a user goal into ordered steps and dependencies.
+2. **Execution Engine** starts dependency-ready steps.
+3. **Worker Agent** executes each step via the tool registry.
+4. **Reviewer Agent** records review decisions and can support approval-gated steps.
+5. **Run Store + Audit** persist state transitions, events, and metrics.
+
+Agent responsibilities:
+- **Planner Agent**: produces deterministic plan structures from goal text.
+- **Worker Agent**: dispatches named tool calls and records step outcomes.
+- **Reviewer Agent**: captures review traces and approval outcomes.
+- **Tools**: deterministic stubs (search/math/http/code/etc.) used to simulate orchestration behavior.
+
+## Architecture
+- Architecture guide: [`docs/architecture.md`](docs/architecture.md)
+- API surface summary: [`docs/api.md`](docs/api.md)
+- Codebase map: [`docs/codebase-overview.md`](docs/codebase-overview.md)
 
 ## How to Run Locally
-### Option A: Docker Compose
-```bash
-docker compose up --build
-```
-- API docs: `http://localhost:8000/docs`
-- Frontend: `http://localhost:5173`
 
-### Option B: Native
+### 1) Install dependencies
 ```bash
-# backend
-cd backend
-pip install -e .[dev]
-ORION_JWT_SECRET=dev-secret uvicorn app.main:app --reload --port 8000
-
-# frontend (new shell)
-cd frontend
-npm ci
-npm run dev
+make setup
 ```
 
-## Demo Workflow
+### 2) Start services
+**Backend API**
 ```bash
-python scripts/run_sample_workflow.py \
-  --goal "Search the vendor landscape. Then compare three options. Summarize findings."
+make dev-backend
 ```
-The sample runner submits a workflow and prints step-by-step execution history using the deterministic agent/tool simulation.
 
-## Screenshots / Demo
-- Screenshot catalog: [`docs/screenshots/README.md`](docs/screenshots/README.md)
-- Portfolio Preview page: [`docs/preview/index.html`](docs/preview/index.html)
-- UI/Design preview link: [Perplexity Portfolio Preview](https://www.perplexity.ai/computer/a/orion-preview-project-1-of-9-lCA5DWRgQoa4AN6VYPXAUQ)
+**Frontend UI (new terminal)**
+```bash
+make dev-frontend
+```
 
-## Limitations and Future Work
-- Current agents/tools are deterministic stubs, not live LLM-driven routing.
-- Token/cost accounting is not implemented because no live model calls are active.
-- Tool integrations (real web search, hardened sandbox, external services) are still demo-scale.
-- Future version can replace planner routing with an LLM-backed router and real embeddings.
+Optional full stack via containers:
+```bash
+make up
+```
+
+### 3) Run a local orchestrator demo workflow
+With backend running on `http://localhost:8000`:
+```bash
+make run-orchestrator-demo
+```
+
+## Demo Workflow Walkthrough
+A typical demo sequence:
+1. Open API docs at `http://localhost:8000/docs`.
+2. Run `make run-orchestrator-demo` to submit a goal-driven workflow.
+3. Inspect run state, step transitions, retries, and approval gating in API/UI.
+4. Review screenshots in [`docs/screenshots/README.md`](docs/screenshots/README.md).
+5. Open the design page at [`docs/preview/index.html`](docs/preview/index.html).
+
+## Portfolio Preview + Screenshots
+- Screenshot index: [`docs/screenshots/README.md`](docs/screenshots/README.md)
+- Portfolio/UI preview: [`docs/preview/index.html`](docs/preview/index.html)
+
+## Notes on LLM Integration
+No API key is required for the default demo because the implementation is stub-based and deterministic.
+
+If you later add an LLM-backed planner/router, store secrets in local environment variables (for example via `.env`) and **never commit API keys**.
 
 ## Resume Bullets
 See [`docs/resume-bullets.md`](docs/resume-bullets.md).
 
 ## License
-This project is licensed under the terms in [`LICENSE`](LICENSE).
+This project is licensed under [`LICENSE`](LICENSE).

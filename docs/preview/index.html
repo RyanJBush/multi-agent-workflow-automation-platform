@@ -6,110 +6,98 @@
   <title>Orion | Portfolio Preview</title>
   <style>
     :root {
-      --bg: #090b14;
-      --panel: #121629;
-      --panel-2: #171c34;
-      --text: #e9ecff;
-      --muted: #b4b9d9;
+      --bg: #060813;
+      --panel: #11162b;
+      --panel-2: #161d38;
+      --text: #edf0ff;
+      --muted: #b8bfdc;
       --accent: #8b5cf6;
       --accent-2: #5b7cfa;
+      --line: #2d3869;
       --ok: #34d399;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: radial-gradient(1200px 600px at 80% -20%, #2b1f5a44, transparent), var(--bg);
+      background:
+        radial-gradient(900px 500px at 80% -10%, #47248d55, transparent),
+        radial-gradient(700px 400px at 10% 120%, #233b8a44, transparent),
+        var(--bg);
       color: var(--text);
       line-height: 1.5;
     }
-    .container { max-width: 1050px; margin: 0 auto; padding: 20px; }
-    .hero, .section { background: linear-gradient(180deg, var(--panel), var(--panel-2)); border: 1px solid #2c335b; border-radius: 16px; padding: 22px; margin-bottom: 16px; }
-    h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+    .container { max-width: 1080px; margin: 0 auto; padding: 20px; }
+    .hero, .section {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 4vw, 2.6rem); }
     h2 { margin-top: 0; font-size: 1.2rem; }
-    .tagline { color: var(--muted); margin: 0 0 14px; }
-    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #2a2350; border: 1px solid #4f3d99; font-size: 0.85rem; }
-    .status { color: var(--ok); font-weight: 600; }
-    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-    .card { background: #0e1328; border: 1px solid #303a69; border-radius: 12px; padding: 14px; }
+    .tagline { color: var(--muted); margin: 0 0 12px; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #2a2350; border: 1px solid #4f3d99; font-size: .85rem; }
+    .status { color: var(--ok); font-weight: 700; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+    .card { background: #0d1329; border: 1px solid #314078; border-radius: 12px; padding: 14px; }
     .badges { display: flex; flex-wrap: wrap; gap: 8px; }
-    .badge { font-size: .85rem; border: 1px solid #41508d; background: #141d3b; padding: 6px 10px; border-radius: 999px; }
-    a { color: #b9beff; }
+    .badge { font-size: .85rem; border: 1px solid #435291; background: #151f3e; padding: 6px 10px; border-radius: 999px; }
+    svg { width: 100%; height: auto; background: #0a0f22; border-radius: 10px; border: 1px solid var(--line); }
+    .edge { stroke: #7280c9; stroke-width: 2; marker-end: url(#arrow); }
+    .node { fill: #1a2145; stroke: var(--accent); stroke-width: 2; }
+    .label { fill: #edf0ff; font-size: 13px; }
+    .edge-label { fill: #c2c8f1; font-size: 11px; }
+    a { color: #c6cbff; }
     footer { text-align: center; color: var(--muted); padding: 12px 0 20px; }
-    svg { width: 100%; height: auto; background: #0a0f22; border-radius: 10px; border: 1px solid #2d3768; }
-    .edge { stroke: #6f7cc4; stroke-width: 2; marker-end: url(#arrow); }
-    .node { fill: #1a2145; stroke: #8b5cf6; stroke-width: 2; }
-    .label { fill: #e9ecff; font-size: 13px; }
-    .edge-label { fill: #bfc5ef; font-size: 11px; }
   </style>
 </head>
 <body>
   <div class="container">
     <section class="hero">
       <h1>Orion</h1>
-      <p class="tagline">Portfolio Preview — a demo-scale multi-agent workflow orchestration platform with auditable execution paths.</p>
-      <span class="pill">Constellation-themed orchestration demo</span>
+      <p class="tagline">Portfolio Preview for a student-built multi-agent workflow orchestration demo with auditable execution traces.</p>
+      <span class="pill">University of Maryland · InfoSci + EE + Business minor</span>
     </section>
 
     <section class="section">
-      <h2>Agent Message Flow (Stub-Based Simulation)</h2>
-      <p>Current implementation status: <span class="status">Stub-based agent routing and tool dispatch</span> (deterministic simulation, no live LLM API calls).</p>
+      <h2>Agent Graph and Message Flow</h2>
+      <p>Implementation status: <span class="status">Stub-based agents and deterministic tool dispatch</span> (no live LLM API calls in the current demo).</p>
       <svg viewBox="0 0 900 360" role="img" aria-label="Agent graph diagram">
-        <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><polygon points="0 0, 8 3.5, 0 7" fill="#6f7cc4"/></marker></defs>
-        <rect class="node" x="40" y="130" rx="12" ry="12" width="170" height="70"/>
-        <text class="label" x="125" y="165" text-anchor="middle">Planner Agent</text>
-
-        <rect class="node" x="280" y="50" rx="12" ry="12" width="170" height="70"/>
-        <text class="label" x="365" y="85" text-anchor="middle">Worker Agent</text>
-
-        <rect class="node" x="280" y="220" rx="12" ry="12" width="170" height="70"/>
-        <text class="label" x="365" y="255" text-anchor="middle">Reviewer Agent</text>
-
-        <rect class="node" x="520" y="130" rx="12" ry="12" width="170" height="70"/>
-        <text class="label" x="605" y="165" text-anchor="middle">Tool Registry</text>
-
-        <rect class="node" x="740" y="130" rx="12" ry="12" width="130" height="70"/>
-        <text class="label" x="805" y="165" text-anchor="middle">Run Store</text>
-
-        <line class="edge" x1="210" y1="165" x2="280" y2="85"/>
-        <text class="edge-label" x="225" y="105">plan steps</text>
-
-        <line class="edge" x1="210" y1="165" x2="280" y2="255"/>
-        <text class="edge-label" x="220" y="235">review request</text>
-
-        <line class="edge" x1="450" y1="85" x2="520" y2="165"/>
-        <text class="edge-label" x="466" y="109">tool call</text>
-
-        <line class="edge" x1="450" y1="255" x2="520" y2="165"/>
-        <text class="edge-label" x="465" y="225">approval feedback</text>
-
-        <line class="edge" x1="690" y1="165" x2="740" y2="165"/>
-        <text class="edge-label" x="700" y="152">events + metrics</text>
+        <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><polygon points="0 0, 8 3.5, 0 7" fill="#7280c9"/></marker></defs>
+        <rect class="node" x="40" y="130" rx="12" ry="12" width="170" height="70"/><text class="label" x="125" y="165" text-anchor="middle">Planner Agent</text>
+        <rect class="node" x="280" y="50" rx="12" ry="12" width="170" height="70"/><text class="label" x="365" y="85" text-anchor="middle">Worker Agent</text>
+        <rect class="node" x="280" y="220" rx="12" ry="12" width="170" height="70"/><text class="label" x="365" y="255" text-anchor="middle">Reviewer Agent</text>
+        <rect class="node" x="520" y="130" rx="12" ry="12" width="170" height="70"/><text class="label" x="605" y="165" text-anchor="middle">Tool Registry</text>
+        <rect class="node" x="740" y="130" rx="12" ry="12" width="130" height="70"/><text class="label" x="805" y="165" text-anchor="middle">Run Store</text>
+        <line class="edge" x1="210" y1="165" x2="280" y2="85"/><text class="edge-label" x="225" y="105">step plan</text>
+        <line class="edge" x1="210" y1="165" x2="280" y2="255"/><text class="edge-label" x="220" y="235">review path</text>
+        <line class="edge" x1="450" y1="85" x2="520" y2="165"/><text class="edge-label" x="466" y="109">tool call</text>
+        <line class="edge" x1="450" y1="255" x2="520" y2="165"/><text class="edge-label" x="465" y="225">approval feedback</text>
+        <line class="edge" x1="690" y1="165" x2="740" y2="165"/><text class="edge-label" x="700" y="152">events + metrics</text>
       </svg>
     </section>
 
     <section class="section">
-      <h2>Key Capabilities</h2>
+      <h2>Agent Roles</h2>
       <div class="grid">
-        <article class="card"><strong>DAG Orchestration</strong><br/>Schedules dependency-ready workflow steps and records state transitions.</article>
-        <article class="card"><strong>Retry + Fallback</strong><br/>Applies retry policy and fallback actions for timeout/runtime failures.</article>
-        <article class="card"><strong>Approval Gate</strong><br/>Blocks sensitive steps until a reviewer decision resumes the run.</article>
-        <article class="card"><strong>Auditability</strong><br/>Persists execution events and exposes metrics for portfolio walkthroughs.</article>
+        <article class="card"><strong>Planner</strong><br/>Creates deterministic, dependency-aware step plans from goal text.</article>
+        <article class="card"><strong>Worker</strong><br/>Runs each planned step through named tools in the registry.</article>
+        <article class="card"><strong>Reviewer</strong><br/>Captures review traces and approval outcomes for sensitive actions.</article>
+        <article class="card"><strong>Orchestrator</strong><br/>Schedules ready steps, applies retries/fallbacks, and persists run state.</article>
       </div>
     </section>
 
     <section class="section">
       <h2>Tech Stack</h2>
       <div class="badges">
-        <span class="badge">Python 3.11+</span><span class="badge">FastAPI</span><span class="badge">SQLAlchemy</span>
-        <span class="badge">PostgreSQL</span><span class="badge">React 18</span><span class="badge">TypeScript</span><span class="badge">Vite</span><span class="badge">Docker Compose</span>
+        <span class="badge">Python 3.11+</span><span class="badge">FastAPI</span><span class="badge">SQLAlchemy</span><span class="badge">PostgreSQL</span><span class="badge">React 18</span><span class="badge">TypeScript</span><span class="badge">Vite</span><span class="badge">Docker Compose</span>
       </div>
-      <p style="margin-top:12px;">GitHub repository: <a href="https://github.com/RyanJBush/Multi-agent-workflow-orchestration-platform">RyanJBush/Multi-agent-workflow-orchestration-platform</a></p>
+      <p style="margin-top:12px;">Repository: <a href="https://github.com/RyanJBush/Multi-agent-workflow-orchestration-platform">RyanJBush/Multi-agent-workflow-orchestration-platform</a></p>
     </section>
 
-    <footer>
-      Built for portfolio review · <a href="https://github.com/RyanJBush">github.com/RyanJBush</a>
-    </footer>
+    <footer>Built for portfolio review and architecture walkthroughs.</footer>
   </div>
 </body>
 </html>
