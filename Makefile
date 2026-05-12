@@ -1,5 +1,4 @@
-.PHONY: setup install install-backend install-frontend dev dev-backend dev-frontend test lint demo-seed up down
-.PHONY: setup install install-backend install-frontend dev dev-backend dev-frontend test lint up down
+.PHONY: setup install install-backend install-frontend dev dev-backend dev-frontend test lint run-orchestrator-demo demo-seed up down
 
 setup: install
 
@@ -9,7 +8,7 @@ install-backend:
 	cd backend && python -m pip install -e .[dev]
 
 install-frontend:
-	cd frontend && npm install
+	cd frontend && npm ci
 
 dev: dev-backend
 
@@ -34,3 +33,6 @@ up:
 
 down:
 	docker compose down -v
+
+run-orchestrator-demo:
+	python scripts/run_sample_workflow.py --goal "Search the vendor landscape. Then compare three options. Summarize findings."
