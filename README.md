@@ -6,7 +6,7 @@
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
 ![CI](https://github.com/RyanJBush/Multi-agent-workflow-orchestration-platform/actions/workflows/ci.yml/badge.svg)
 
-# Orion
+# Orion — Multi-Agent Workflow Orchestration Platform
 
 **Multi-Agent Workflow Orchestration Platform — Portfolio Project**
 

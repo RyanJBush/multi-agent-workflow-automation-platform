@@ -18,7 +18,7 @@ taken from a local run with the demo seed data loaded.
 | `dag-view.png` | DAG with dependency edges between planned steps, plus run insight panel | `components/workflow/WorkflowGraph.tsx` on `WorkflowExecutionPage` (run #1) | ✅ captured |
 | `run-logs.png` | Per-step execution log with selected step detail, retries, and reviewer events | `components/workflow/ExecutionLogPanel.tsx` (run #6, retry/fallback scenario) | ✅ captured |
 | `dashboard-metrics.png` | KPI cards: total runs, running, completed, avg step latency, completion rate | `DashboardPage.tsx` | ✅ captured |
-| `approval-queue.png` | The `sensitive_echo` step in `failed` state awaiting a human approval decision | `WorkflowExecutionPage` after running the human-in-the-loop scenario (run #7) | ✅ captured |
+| `approval-queue.png` | The `sensitive_echo` step in `blocked` state awaiting a human approval decision | `WorkflowExecutionPage` after running the human-in-the-loop scenario (run #7) | ✅ captured |
 | `agent-monitor.png` | Planner / worker / reviewer status table plus tool health table | `AgentMonitorPage.tsx` | ✅ captured |
 | `api-docs.png` | FastAPI auto-generated `/docs` (OpenAPI) page showing all tagged routes | `http://localhost:8000/docs` | ✅ captured |
 
