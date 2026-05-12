@@ -1,10 +1,16 @@
 import pytest
 
-from app.agents.planner_agent import planner_agent
 from app.agents.contracts import AgentRequest
+from app.agents.planner_agent import planner_agent
 from app.agents.reviewer_agent import reviewer_agent
 from app.agents.worker_agent import WorkerAgent
-from app.tools.base import Tool, ToolPermissionError, ToolRuntimeError, ToolSchema, ToolTimeoutError
+from app.tools.base import (
+    Tool,
+    ToolPermissionError,
+    ToolRuntimeError,
+    ToolSchema,
+    ToolTimeoutError,
+)
 from app.tools.default_tools import MathTool, SensitiveEchoTool
 from app.tools.registry import ToolRegistry
 

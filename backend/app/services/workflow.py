@@ -1,6 +1,14 @@
 from sqlalchemy.orm import Session
 
-from app.models import Agent, MemoryEntry, Task, TaskStatus, ToolCall, Workflow, WorkflowStatus
+from app.models import (
+    Agent,
+    MemoryEntry,
+    Task,
+    TaskStatus,
+    ToolCall,
+    Workflow,
+    WorkflowStatus,
+)
 from app.services.memory import MemoryService
 from app.services.tools import ToolRegistry
 

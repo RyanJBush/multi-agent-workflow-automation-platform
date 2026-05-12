@@ -2,7 +2,11 @@ from sqlalchemy.orm import Session
 
 from app.models.common import ApprovalStatus
 from app.repositories.approval_repository import ToolApprovalRepository
-from app.schemas.approval import ToolApprovalDecision, ToolApprovalRequestCreate, ToolApprovalResponse
+from app.schemas.approval import (
+    ToolApprovalDecision,
+    ToolApprovalRequestCreate,
+    ToolApprovalResponse,
+)
 
 
 class ToolApprovalService:
