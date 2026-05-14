@@ -19,7 +19,7 @@ from app.models.common import (
     TaskStatus,
     WorkflowRunStatus,
 )
-from app.models.workflow import ExecutionStepModel
+from app.models.workflow import ExecutionStepModel, TraceModel, TraceStepModel
 from app.repositories.task_repository import TaskRepository
 from app.repositories.workflow_repository import WorkflowRunRepository
 from app.schemas.audit import AuditLogCreate
@@ -153,6 +153,11 @@ class WorkflowEngine:
             attempts += 1
             try:
                 self._ensure_tool_approved(run.id, step.step_id, action)
+                
+                if action == "checkpoint":
+                    run.status = WorkflowRunStatus.awaiting_approval
+                    self.db.commit()
+                    return StepExecutionOutcome(success=False, output_text="awaiting_approval", attempts=attempts, latency_ms=int((time.perf_counter()-start)*1000), last_error=None, retried=False, used_fallback=False, failure_class="blocked")
                 result = worker.execute(action=action, instruction=step.input_text, timeout_seconds=step.timeout_seconds)
                 latency_ms = int((time.perf_counter() - start) * 1000)
                 return StepExecutionOutcome(

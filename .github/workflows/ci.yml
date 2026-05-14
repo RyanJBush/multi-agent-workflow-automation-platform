@@ -50,3 +50,18 @@ jobs:
       - run: npm ci
       - run: npm run lint || true
       - run: npm run build
+
+
+  benchmarks:
+    name: Benchmark Harness Smoke Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run benchmark harness
+        run: |
+          python benchmarks/run_benchmarks.py
+          test -f benchmarks/results/results.csv
+          test -f benchmarks/results/summary.md

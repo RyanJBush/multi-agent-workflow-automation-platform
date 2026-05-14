@@ -13,6 +13,8 @@ from app.models import (
     WorkflowRunModel,
     WorkflowTemplateModel,
     WorkflowTimelineEventModel,
+    TraceModel,
+    TraceStepModel,
 )
 
 
@@ -31,5 +33,7 @@ def init_db() -> None:
         WorkflowRunModel,
         WorkflowTemplateModel,
         WorkflowTimelineEventModel,
+        TraceModel,
+        TraceStepModel,
     )
     Base.metadata.create_all(bind=engine)

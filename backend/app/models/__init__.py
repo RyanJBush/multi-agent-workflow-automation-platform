@@ -10,6 +10,8 @@ from app.models.workflow import (
     WorkflowRunModel,
     WorkflowTemplateModel,
     WorkflowTimelineEventModel,
+    TraceModel,
+    TraceStepModel,
 )
 
 __all__ = [
@@ -25,4 +27,6 @@ __all__ = [
     "WorkflowRunModel",
     "WorkflowTemplateModel",
     "WorkflowTimelineEventModel",
+    "TraceModel",
+    "TraceStepModel",
 ]
