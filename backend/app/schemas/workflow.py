@@ -134,3 +134,27 @@ class WorkflowTemplate(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class TraceStep(BaseModel):
+    agent_name: str
+    input: str
+    output: str
+    tool_calls: list[str] = Field(default_factory=list)
+    latency_ms: int
+    token_count: int
+    timestamp: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class Trace(BaseModel):
+    trace_id: str
+    workflow_id: int
+    steps: list[TraceStep] = Field(default_factory=list)
+
+
+class WorkflowApprovalRequest(BaseModel):
+    decision: str
+    comment: str = ""

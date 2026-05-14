@@ -12,6 +12,7 @@ class TaskStatus(str, Enum):
     running = "running"
     completed = "completed"
     failed = "failed"
+    awaiting_approval = "awaiting_approval"
 
 
 class WorkflowRunStatus(str, Enum):

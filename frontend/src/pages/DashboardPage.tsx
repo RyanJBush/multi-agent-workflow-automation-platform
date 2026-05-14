@@ -15,6 +15,7 @@ interface WorkflowMetricsSnapshot {
 export function DashboardPage() {
   const [metrics, setMetrics] = useState<WorkflowMetricsSnapshot | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [pending, setPending] = useState<number>(0)
 
   useEffect(() => {
     let active = true
@@ -27,6 +28,7 @@ export function DashboardPage() {
         if (!active) return
         setError(loadError instanceof Error ? loadError.message : 'Unable to load dashboard metrics')
       })
+    fetchJSON<Array<{id:number}>>("/workflows/pending").then(d=>{if(active) setPending(d.length)}).catch(()=>{})
     return () => {
       active = false
     }
@@ -50,6 +52,7 @@ export function DashboardPage() {
         <KpiCard label="Running Workflows" value={String(running)} />
         <KpiCard label="Completed Runs" value={String(completed)} />
         <KpiCard label="Avg Step Latency" value={avgLatency} delta={`Completion ${completionRate}`} />
+              <KpiCard label="Pending Approvals" value={String(pending)} />
       </div>
 
       <div className="panel">

@@ -117,3 +117,24 @@ class WorkflowTemplateModel(TimestampMixin, Base):
     workflow_name: Mapped[str] = mapped_column(String(128), default="default", nullable=False)
     tags: Mapped[list[str]] = mapped_column(JSON, default=lambda: [], nullable=False)
     is_demo: Mapped[bool] = mapped_column(default=False, nullable=False)
+
+
+class TraceModel(TimestampMixin, Base):
+    __tablename__ = "traces"
+
+    trace_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    workflow_id: Mapped[int] = mapped_column(ForeignKey("workflow_runs.id", ondelete="CASCADE"), nullable=False, index=True)
+
+
+class TraceStepModel(Base):
+    __tablename__ = "trace_steps"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    trace_id: Mapped[str] = mapped_column(ForeignKey("traces.trace_id", ondelete="CASCADE"), nullable=False, index=True)
+    agent_name: Mapped[str] = mapped_column(String(128), nullable=False)
+    input: Mapped[str] = mapped_column(Text, default="", nullable=False)
+    output: Mapped[str] = mapped_column(Text, default="", nullable=False)
+    tool_calls: Mapped[list[str]] = mapped_column(JSON, default=lambda: [], nullable=False)
+    latency_ms: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    token_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)

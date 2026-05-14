@@ -14,6 +14,9 @@ from app.schemas.workflow import (
     WorkflowRunControlResponse,
     WorkflowRunInsight,
     WorkflowRunMetrics,
+    Trace,
+    TraceStep,
+    WorkflowApprovalRequest,
     WorkflowTemplate,
     WorkflowTemplateCreate,
     WorkflowTimelineEvent,
@@ -214,3 +217,40 @@ def get_workflow_metrics(db: Session = Depends(get_db)) -> WorkflowMetrics:
         run_status_counts=status_counts,
         tool_reliability=reliability,
     )
+
+
+@router.get("/pending", response_model=list[WorkflowRun])
+def get_pending_workflows(db: Session = Depends(get_db)) -> list[WorkflowRun]:
+    rows = db.query(WorkflowRunModel).filter(WorkflowRunModel.status == WorkflowRunStatus.awaiting_approval).all()
+    return [WorkflowRun.model_validate(r) for r in rows]
+
+
+@router.post("/{run_id}/approve", response_model=WorkflowRun)
+def approve_workflow(run_id: int, payload: WorkflowApprovalRequest, db: Session = Depends(get_db)) -> WorkflowRun:
+    run = db.query(WorkflowRunModel).filter(WorkflowRunModel.id == run_id).first()
+    if not run:
+        raise HTTPException(status_code=404, detail="Workflow run not found")
+    if payload.decision == "approve":
+        run.status = WorkflowRunStatus.running
+    else:
+        run.status = WorkflowRunStatus.failed
+    db.commit()
+    db.refresh(run)
+    return WorkflowRun.model_validate(run)
+
+
+@router.get("/traces/{workflow_id}", response_model=Trace)
+def get_trace(workflow_id: int, db: Session = Depends(get_db)) -> Trace:
+    from app.models.workflow import TraceModel, TraceStepModel
+    trace = db.query(TraceModel).filter(TraceModel.workflow_id == workflow_id).first()
+    if not trace:
+        raise HTTPException(status_code=404, detail="Trace not found")
+    steps = db.query(TraceStepModel).filter(TraceStepModel.trace_id == trace.trace_id).order_by(TraceStepModel.timestamp.asc()).all()
+    return Trace(trace_id=trace.trace_id, workflow_id=trace.workflow_id, steps=[TraceStep.model_validate(s) for s in steps])
+
+
+@router.get("/traces", response_model=list[Trace])
+def list_traces(page: int = 1, page_size: int = 20, db: Session = Depends(get_db)) -> list[Trace]:
+    from app.models.workflow import TraceModel
+    rows = db.query(TraceModel).offset((page-1)*page_size).limit(page_size).all()
+    return [Trace(trace_id=r.trace_id, workflow_id=r.workflow_id, steps=[]) for r in rows]
