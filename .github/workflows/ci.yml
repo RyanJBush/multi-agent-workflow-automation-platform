@@ -26,5 +26,5 @@ jobs:
       - name: Ruff
         run: ruff check .
 
-      - name: Pytest smoke
-        run: pytest backend/tests/test_health.py
+      - name: Pytest
+        run: pytest backend/tests/ -q --tb=short
