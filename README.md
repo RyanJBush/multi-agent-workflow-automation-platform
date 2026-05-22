@@ -1,5 +1,22 @@
 # Orion — Multi-Agent Workflow Orchestration Platform
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-multi--agent.onrender.com-4CAF50?logo=render&logoColor=white)](https://multi-agent.onrender.com)
+
+## Architecture Distinction
+This platform focuses on task decomposition, agent role assignment, inter-agent communication, and stateful workflow orchestration — not research retrieval. Think of it as the orchestration layer that could coordinate multiple specialized agents including a research agent.
+
+```mermaid
+flowchart LR
+    O[Orchestrator Agent] --> TR[Task Router]
+    TR --> DA[Data Agent]
+    TR --> CA[Code Agent]
+    TR --> AA[Analysis Agent]
+    DA --> MS[Memory/State Store]
+    CA --> MS
+    AA --> MS
+    MS --> OA[Output Aggregator]
+```
+
 Orion is a **portfolio-scale orchestrator demo** built by a **University of Maryland student studying Information Science and Electrical Engineering with a Business minor**. It demonstrates how a backend can coordinate specialized agents over a workflow graph while keeping execution traceable in both API responses and UI views.
 
 ## Project Positioning (Honest Behavior Statement)
@@ -11,6 +28,11 @@ Orion currently uses **stub-based agents and deterministic tools**. The planner,
 - Retry + fallback controls for failed steps.
 - Approval-gated sensitive actions that pause and resume runs.
 - Audit logs and usage-style metrics for replay and walkthroughs.
+
+## Supported Workflow Types
+- Document processing pipeline
+- Data analysis chain
+- Code review workflow
 
 ## Agent Graph Overview
 For full details, see [`docs/architecture.md`](docs/architecture.md).
