@@ -1,126 +1,111 @@
 # Multi-Agent Workflow Automation Platform
 
-## Executive Summary
-This project is a recruiter-ready demonstration of a **multi-agent workflow automation platform** for AI engineering and software automation use cases. It shows how a Python backend can decompose a user goal into dependency-aware steps, route each step to role-based agents, execute tool calls through a registry, and persist execution state for replay and analysis. The implementation emphasizes orchestration system design (planning, routing, retries, approvals, observability) with deterministic agents/tools rather than external LLM APIs.
+## 1) Project Title
+**Multi-Agent Workflow Automation Platform**
 
-## Workflow Automation Problem This Project Solves
-Teams often have repeatable multi-step tasks (research, analysis, review, approvals) but no consistent orchestration layer to:
-- break high-level goals into executable steps,
-- route work to the right agent role,
-- handle failures with retries/fallbacks,
-- pause on sensitive actions for human approval,
-- and provide auditable run history and metrics.
+## 2) Executive Summary
+This project showcases a full-stack, API-first orchestration platform for multi-step AI workflow automation. A FastAPI backend plans and executes dependency-aware workflows across planner, worker, and reviewer agents, while a React dashboard provides run control and visibility. The implementation focuses on reliable orchestration patterns (routing, retries, fallback, approvals, replay, observability) using deterministic demo tools and agents.
 
-This platform implements that orchestration layer end to end through API + UI so workflows are structured, traceable, and repeatable.
+## 3) Workflow Automation Problem This Project Solves
+Many engineering teams have repeatable AI/automation tasks but lack a standardized orchestration layer to break work into steps, route actions to the right agent/tool, and track execution outcomes. This project solves that by providing structured planning, run-state persistence, tool dispatch, and operational controls in one system. It turns ad hoc automation into a traceable workflow lifecycle with metrics, timeline events, and auditability.
 
-## Key Features
-- **Goal-to-workflow decomposition:** planner converts task text into ordered DAG-like execution steps with dependencies.
-- **Role-based agent flow:** planner, worker, and reviewer agents each have clear responsibilities.
-- **Tool registry execution model:** workers invoke named tools through a single registry interface.
-- **Reliability controls:** retry policies, timeout handling, and fallback actions per step.
-- **Human-in-the-loop approvals:** sensitive steps can block execution until approval/rejection is recorded.
-- **Run lifecycle controls:** pause, resume, cancel, and replay workflow runs.
-- **Observability:** run timelines, run-level metrics, platform metrics, audit events, and generated workflow insights.
-- **State + memory services:** persistent task/run/step storage plus basic and vector memory endpoints.
+## 4) Key Features
+- Goal decomposition into ordered workflow steps with dependencies and retry policies.
+- Role-based agent design (`planner`, `worker-general`, `worker-math`, `reviewer`).
+- Tool registry pattern with worker/tool permissions and per-tool timeout enforcement.
+- Retry, backoff, and fallback execution handling in the workflow engine.
+- Human-in-the-loop approvals for sensitive tool actions.
+- Run controls: pause, resume, cancel, replay (including replay from a specific step).
+- Observability endpoints for run timelines, run metrics, platform metrics, and run insights.
+- Audit event logging for workflow lifecycle actions.
+- Usage quota enforcement per actor for task submissions.
+- Memory services for basic namespace entries and vector-style retrieval (demo embedding logic).
 
-## Tech Stack
-- **Backend:** Python 3.11+, FastAPI, Pydantic, SQLAlchemy.
-- **Frontend:** React 18, TypeScript, Vite, React Router.
-- **Data/storage:** PostgreSQL via Docker Compose (SQLite fallback in local config paths).
-- **Testing & quality:** pytest, ruff, ESLint.
-- **Containerization/dev workflow:** Dockerfiles, docker-compose, Makefile automation.
+## 5) Tech Stack
+- **Backend:** Python 3.11+, FastAPI, Pydantic, SQLAlchemy
+- **Frontend:** React 18, TypeScript, Vite, React Router
+- **Data layer:** PostgreSQL via Docker Compose, SQLite default local fallback
+- **Tooling:** pytest, Ruff, ESLint, Makefile, Docker/Docker Compose
 
-## Multi-Agent Architecture Overview
-At runtime, task submission triggers a planner-driven workflow run:
-1. **Task service** stores the task and creates a workflow run.
-2. **Planner agent** decomposes the goal into structured planned steps (with dependencies/retry/fallback metadata).
-3. **Workflow engine** executes dependency-ready steps in order.
-4. **Worker agent** invokes the selected tool through the registry.
-5. **Reviewer agent** records structured review traces.
-6. **Persistence + observability services** store step status, audit events, approvals, usage quotas, and metrics/insights.
+## 6) Multi-Agent Architecture Overview
+Task submission creates a workflow run and triggers planner-driven step generation. The workflow engine validates dependency structure, executes ready steps (including parallel-ready steps), and persists state transitions. Worker agents call tools through a centralized registry, reviewer agents score/validate outputs, and supporting services persist approvals, audit events, memory entries, and usage/metrics data.
 
-Important implementation constraint: the default agents/tools are deterministic stubs for orchestration demonstration, not live external LLM/tool integrations.
+> Current scope is intentionally deterministic: default tools simulate search/API/code execution behavior and do not perform real external network calls.
 
-## Agent Roles and Workflow Sequence
+## 7) Agent Roles and Workflow Sequence
 ### Agent roles
-- **Planner Agent**
-  - Parses goal text and creates planned steps.
-  - Assigns tool/action type, owner hints, dependencies, retry/fallback settings.
-- **Worker Agent**
-  - Executes each step by calling a registered tool.
-  - Returns outputs/errors used by retry/fallback logic.
-- **Reviewer Agent**
-  - Produces a structured review/trace for completed execution context.
+- **Planner Agent:** parses task text, assigns step actions, worker ownership, dependencies, and retry/fallback metadata.
+- **Worker Agents:** execute routed actions through the tool registry with permission and timeout constraints.
+- **Reviewer Agent:** evaluates produced outputs and writes structured review metadata used in run events.
 
 ### Workflow sequence
-1. Client submits `POST /api/v1/tasks/submit` with title/description.
-2. Planner produces step plan.
-3. Engine persists and runs steps.
-4. If a step fails, engine retries based on policy; may fallback if configured.
-5. If a step is sensitive, run is blocked pending `/approvals` decision.
-6. Run ends as completed/failed/blocked/cancelled; metrics, timeline, audit, and insights are queryable.
+1. Client submits a task (`/api/v1/tasks/submit` or template run).
+2. Planner decomposes the goal into executable steps.
+3. Engine persists steps and executes dependency-ready steps.
+4. Step execution applies retry/backoff and optional fallback logic on failure classes.
+5. Sensitive actions require approval via `/api/v1/approvals` before progressing.
+6. Run concludes as completed/failed/blocked/canceled, with timeline, metrics, and insight endpoints available for analysis.
 
-## Setup and Installation
+## 8) Setup and Installation
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+
 - npm
 - (Optional) Docker + Docker Compose
 
-### Local setup
+### Install dependencies
 ```bash
 make setup
 ```
 
-### Start backend
+### Run backend
 ```bash
 make dev-backend
 ```
-Backend docs: `http://localhost:8000/docs`
+API docs: `http://localhost:8000/docs`
 
-### Start frontend (new terminal)
+### Run frontend
 ```bash
 make dev-frontend
 ```
 
-### Optional full stack with containers
+### Optional containerized stack
 ```bash
 make up
 ```
 
-### Run sample orchestrated workflow
+### Run tests and lint
+```bash
+make test
+make lint
+```
+
+### Run sample workflow demo
 ```bash
 make run-orchestrator-demo
 ```
 
-### Run tests
-```bash
-make test
-```
+## 9) Example Use Cases
+- Automating multi-step research/analysis tasks with explicit step routing and dependencies.
+- Testing orchestrator resilience paths (timeouts, retries, fallback behavior).
+- Demonstrating approval-gated workflow controls for sensitive actions.
+- Inspecting workflow operations through timelines, run metrics, and reliability summaries.
 
-## Example Use Cases
-- **AI operations workflow simulation:** decompose a request into research/analysis/review-style steps and execute with visibility.
-- **Approval-gated automation:** route sensitive actions into a blocked state until a human decision is captured.
-- **Reliability testing for orchestrators:** exercise flaky/slow/sensitive tool paths to validate retry, timeout, and fallback behavior.
-- **Workflow analytics demos:** inspect run metrics, timelines, and tool reliability summaries for post-run evaluation.
+## 10) Skills Demonstrated
+- Multi-agent system design and orchestration architecture.
+- Task decomposition, workflow routing, and dependency-aware execution.
+- Tool abstraction via registry pattern and controlled tool invocation.
+- API design for workflow lifecycle control and observability.
+- Reliability engineering patterns: retries, fallback strategies, timeout handling.
+- Human-in-the-loop workflow governance (approval gates).
+- Full-stack implementation (Python APIs + TypeScript UI) for automation platforms.
 
-## Skills Demonstrated
-- Multi-agent workflow orchestration design.
-- Task decomposition and step dependency management.
-- API-first backend architecture with modular service/repository layers.
-- Deterministic tool routing via registry pattern.
-- Reliability engineering patterns (retry, fallback, timeout handling).
-- Human-in-the-loop control points (approvals).
-- Observability design (metrics, timelines, audit logs, insights).
-- Full-stack implementation and documentation for technical communication.
+## 11) Resume-Ready Project Description
+Designed and built a **Multi-Agent Workflow Automation Platform** with **Python (FastAPI)** and **React/TypeScript** that orchestrates tasks across planner, worker, and reviewer agents. Implemented dependency-aware execution, tool-registry dispatch, retry/fallback controls, approval-gated actions, run replay, and operational telemetry (timeline, metrics, insights, audit). Delivered a modular orchestration architecture suitable for extension into production LLM workflows and enterprise automation pipelines.
 
-## Resume-Ready Project Description
-Built a **Multi-Agent Workflow Automation Platform** using **Python/FastAPI** and **React/TypeScript** to orchestrate goal-driven tasks across planner, worker, and reviewer agents. Implemented dependency-aware execution, tool-registry dispatch, retry/fallback policies, approval-gated actions, and run lifecycle controls (pause/resume/cancel/replay), with persistent observability through metrics, timelines, and audit logs. Designed the system as a modular orchestration architecture suitable for extending into production LLM-integrated agent workflows.
-
-## Future Improvements
-- Replace deterministic planner/worker behavior with optional live LLM-backed planning and tool selection.
-- Add production-grade authn/authz and role-based access controls for workflow operations.
-- Expand tool adapter framework for real external systems (ticketing, data warehouses, internal APIs).
-- Improve queueing/concurrency controls for higher-throughput execution.
-- Add deeper evaluation and guardrail layers (policy checks, automated run quality scoring).
-- Extend frontend with richer DAG visualization and live execution streaming.
+## 12) Future Improvements
+- Add optional live LLM planning/routing while preserving deterministic test mode.
+- Expand tool adapters from simulated endpoints to real external services.
+- Add richer authn/authz and multi-tenant policy controls.
+- Enhance queueing/concurrency controls and background worker execution.
+- Extend frontend with richer real-time run streaming and deeper graph analytics.
